@@ -137,7 +137,7 @@ LEFT JOIN staging_songs s on (e.song = s.title and e.artist = s.artist_name and 
 WHERE page = 'NextSong'
 AND userid IS NOT NULL
 ON CONFLICT (user_id)
-DO UPDATE SET user_id = EXCLUDED.user_id;
+DO UPDATE SET level = EXCLUDED.level;
 """)
 
 user_table_insert = ("""INSERT INTO users (user_id, first_name, last_name, gender, level)
@@ -149,7 +149,9 @@ gender,
 level
 FROM staging_events
 WHERE userid IS NOT NULL
-AND page = 'NextSong';
+AND page = 'NextSong'
+ON CONFLICT (user_id)
+DO UPDATE SET level = EXCLUDED.level;
 """)
 
 song_table_insert = ("""INSERT INTO songs (song_id, title, artist_id, year, duration)
