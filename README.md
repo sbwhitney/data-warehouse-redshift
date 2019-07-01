@@ -1,6 +1,6 @@
 # data-warehouse-redshift
 
-Our startup called Sparkify wants to analyze the data we've been collecting on songs and user activity on our new music streaming app. The analytics team is particularly interested in understanding what songs users are listening to. Currently, they don't have an easy way to query their data, which resides in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app.
+A music streaming startup, Sparkify, has grown their user base and song database and want to move their processes and data onto the cloud. Their data resides in S3, in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app.
 
 As the data engineer team, we've been tasked with building an ETL pipeline that extracts the data from S3, stages them in Redshift, and transforms data into a set of dimensional tables for the analytics team to continue finding insights in what songs their users are listening to. We'll be able to test the database and ETL pipeline by running queries given to us by the analytics team from Sparkify and compare our results with their expected results.
 
