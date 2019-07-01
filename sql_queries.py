@@ -57,7 +57,7 @@ year INT
 songplay_table_create = ("""
 CREATE TABLE songplays (
 songplay_id INT IDENTITY(0,1) PRIMARY KEY,
-start_time TIMESTAMP,
+start_time TIMESTAMP NOT NULL,
 user_id TEXT NOT NULL,
 level TEXT,
 song_id TEXT NOT NULL,
@@ -82,7 +82,7 @@ song_table_create = ("""
 CREATE TABLE songs (
 song_id TEXT PRIMARY KEY,
 title TEXT,
-artist_id TEXT,
+artist_id TEXT NOT NULL,
 year INT,
 duration DECIMAL
 );
@@ -148,7 +148,8 @@ lastname,
 gender,
 level
 FROM staging_events
-WHERE userid IS NOT NULL;
+WHERE userid IS NOT NULL
+AND page = 'NextSong';
 """)
 
 song_table_insert = ("""INSERT INTO songs (song_id, title, artist_id, year, duration)
