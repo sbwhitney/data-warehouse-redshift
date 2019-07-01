@@ -182,7 +182,7 @@ EXTRACT(day FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second'),
 EXTRACT(week FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second'),
 EXTRACT(month FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second'),
 EXTRACT(year FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second'),
-EXTRACT(weekday FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second')
+EXTRACT(dow FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second')
 FROM staging_events;
 """)
 
