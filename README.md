@@ -33,6 +33,8 @@ log_data/2018/11/2018-11-12-events.json
 log_data/2018/11/2018-11-13-events.json
 ```
 
+# Execution
+
 1. Create Amazon Redshift database.
 
 2. Run `create_tables.py` to create and drop and tables.
