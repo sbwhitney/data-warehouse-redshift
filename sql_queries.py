@@ -59,40 +59,40 @@ CREATE TABLE songplays (
 songplay_id INT IDENTITY(0,1) PRIMARY KEY,
 start_time TIMESTAMP,
 user_id TEXT NOT NULL,
-level TEXT NOT NULL,
+level TEXT,
 song_id TEXT NOT NULL,
 artist_id TEXT NOT NULL,
-session_id INT NOT NULL,
-location TEXT NOT NULL,
-user_agent TEXT NOT NULL
+session_id INT,
+location TEXT,
+user_agent TEXT
 );
 """)
 
 user_table_create = ("""
 CREATE TABLE users (
 user_id TEXT PRIMARY KEY,
-first_name TEXT NOT NULL,
-last_name TEXT NOT NULL,
+first_name TEXT,
+last_name TEXT,
 gender TEXT,
-level TEXT NOT NULL
+level TEXT
 );
 """)
 
 song_table_create = ("""
 CREATE TABLE songs (
 song_id TEXT PRIMARY KEY,
-title TEXT NOT NULL,
-artist_id TEXT NOT NULL,
+title TEXT,
+artist_id TEXT,
 year INT,
-duration DECIMAL NOT NULL
+duration DECIMAL
 );
 """)
 
 artist_table_create = ("""
 CREATE TABLE artists (
 artist_id TEXT PRIMARY KEY,
-name TEXT NOT NULL,
-location TEXT NOT NULL,
+name TEXT,
+location TEXT,
 latitude TEXT,
 longitude TEXT
 );
@@ -101,12 +101,12 @@ longitude TEXT
 time_table_create = ("""
 CREATE TABLE time (
 start_time TIMESTAMP PRIMARY KEY,
-hour INT NOT NULL,
-day INT NOT NULL,
-week INT NOT NULL,
-month INT NOT NULL,
-year INT NOT NULL,
-weekday INT NOT NULL
+hour INT,
+day INT,
+week INT,
+month INT,
+year INT,
+weekday INT
 );
 """)
 
@@ -123,7 +123,7 @@ COPY staging_songs FROM {0} credentials 'aws_iam_role={1}' compupdate off region
 # FINAL TABLES
 
 songplay_table_insert = ("""INSERT INTO songplays (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
-SELECT
+SELECT DISTINCT
 TIMESTAMP 'epoch' + ts/1000 * interval '1 second',
 userid,
 level,
@@ -133,13 +133,15 @@ sessionid,
 location,
 useragent
 FROM staging_events e
-LEFT JOIN staging_songs s on (song = title)
+LEFT JOIN staging_songs s on (e.song = s.title and e.artist = s.artist_name and e.length = s.duration)
 WHERE page = 'NextSong'
-AND userid IS NOT NULL;
+AND userid IS NOT NULL
+ON CONFLICT (user_id)
+DO UPDATE SET user_id = EXCLUDED.user_id;
 """)
 
 user_table_insert = ("""INSERT INTO users (user_id, first_name, last_name, gender, level)
-SELECT
+SELECT DISTINCT
 userid,
 firstname,
 lastname,
@@ -150,7 +152,7 @@ WHERE userid IS NOT NULL;
 """)
 
 song_table_insert = ("""INSERT INTO songs (song_id, title, artist_id, year, duration)
-SELECT
+SELECT DISTINCT
 songid,
 title,
 artist_id,
@@ -161,7 +163,7 @@ WHERE songid IS NOT NULL;
 """)
 
 artist_table_insert = ("""INSERT INTO artists (artist_id, name, location, latitude, longitude)
-SELECT
+SELECT DISTINCT
 artist_id,
 artist_name,
 artist_location,
@@ -173,7 +175,7 @@ WHERE artist_id IS NOT NULL;
 
 time_table_insert = ("""
 INSERT INTO time (start_time, hour, day, week, month, year, weekday)
-SELECT
+SELECT DISTINCT
 TIMESTAMP 'epoch' + ts/1000 * interval '1 second',
 EXTRACT(hour FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second'),
 EXTRACT(day FROM TIMESTAMP 'epoch' + ts/1000 * interval '1 second'),

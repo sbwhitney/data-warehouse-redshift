@@ -33,6 +33,7 @@ log_data/2018/11/2018-11-12-events.json
 log_data/2018/11/2018-11-13-events.json
 ```
 
+
 1. Run `create_tables.py` to create and drop and tables.
 
 2. Run `etl.py` to process the entire datasets.
