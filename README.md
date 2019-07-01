@@ -7,7 +7,7 @@ As the data engineer team, we've been tasked with building an ETL pipeline that 
 
 # Project Description
 
-In this project, we'll leverage data warehouses and AWS to build an ETL pipeline for a database hosted on Redshift. To complete the project, we will need to load data from S3 to staging tables on Redshift and execute SQL statements that create the analytics tables from these staging tables.
+In this project, we'll leverage a data warehouse and AWS to build an ETL pipeline for a database hosted on Redshift. To complete the project, we will need to load data from S3 to staging tables on Redshift and execute SQL statements that create the analytics tables from these staging tables.
 
 # Song Dataset
 
