@@ -37,6 +37,6 @@ log_data/2018/11/2018-11-13-events.json
 
 1. Create Amazon Redshift database.
 
-2. Run `create_tables.py` to create and drop and tables.
+2. Run `create_tables.py` to create and drop the tables.
 
 3. Run `etl.py` to process the entire datasets.
